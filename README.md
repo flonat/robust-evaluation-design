@@ -1,4 +1,4 @@
-# Replication Package — Strategic-Compliance Evaluation (Anonymous)
+# Replication Package — Robust Evaluation Design (Anonymous)
 
 Replication code for the paper submitted to NeurIPS 2026 (Theory track) modelling
 AI safety evaluation as a Stackelberg game between a regulator (leader) and a

@@ -1,4 +1,4 @@
-"""Shared primitives for the Stackelberg strategic-compliance model.
+"""Shared primitives for the Stackelberg evaluation-design model.
 
 All formulas match the model section of the accompanying paper:
   - Developer payoff (eq. developer-payoff):

@@ -1,7 +1,7 @@
 [project]
-name = "strategic-compliance-experiments"
+name = "robust-evaluation-design-experiments"
 version = "0.1.0"
-description = "Replication code for the strategic-compliance evaluation paper (anonymous review)."
+description = "Replication code for the robust-evaluation-design paper (anonymous review)."
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.26",
