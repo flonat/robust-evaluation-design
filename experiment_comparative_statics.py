@@ -8,20 +8,16 @@ Three sub-experiments:
   3. Detection-probability estimation error — vary hat_delta around true delta
      and measure regulator loss.
 
-Writes out/tables/comparative_statics.tex.
+Writes paper-aij/paper/output/tables/comparative_statics.tex.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 
+from config import N_ENV_ROBUSTNESS, OUT_TBL, SEED_DELTA_MISEST, SEED_TYPE_MISSPEC
 from model import (Environment, alpha_star, boltzmann_alpha, myopic_alpha,
                    regulator_optimum, regulator_payoff)
-
-REPO_ROOT = Path(__file__).resolve().parent
-OUT_TBL = REPO_ROOT / "out" / "tables"
 
 # Baseline chosen so Phi = B^2/k_sigma + F^2/k_delta = 8/3 < c(c+gamma) = 7.0,
 # placing the model in the interior regime required by Proposition~\ref{prop:comp-statics}.
@@ -84,9 +80,13 @@ def run_type_misspec() -> dict[str, float]:
 
     Regulator designs optimally assuming rationality, then evaluates against
     each type. Report mean payoff vs oracle (who knows the true type).
+
+    Uses an independent seed (SEED_TYPE_MISSPEC) and an independent environment
+    family (N_ENV_ROBUSTNESS draws from a tighter parameter range) so that
+    misspecification gaps are not entangled with the headline horse-race draws.
     """
-    rng = np.random.default_rng(2026)
-    n = 200
+    rng = np.random.default_rng(SEED_TYPE_MISSPEC)
+    n = N_ENV_ROBUSTNESS
     gaps: dict[str, list[float]] = {"bounded": [], "myopic": []}
     for _ in range(n):
         env = Environment(
@@ -114,9 +114,13 @@ def run_type_misspec() -> dict[str, float]:
 
 
 def run_delta_misest() -> dict[float, float]:
-    """Mean regulator loss from misestimating delta by a given multiplicative factor."""
-    rng = np.random.default_rng(11)
-    n = 200
+    """Mean regulator loss from misestimating delta by a given multiplicative factor.
+
+    Uses an independent seed (SEED_DELTA_MISEST) and an independent environment
+    family from run_type_misspec, isolating delta-misestimation effects.
+    """
+    rng = np.random.default_rng(SEED_DELTA_MISEST)
+    n = N_ENV_ROBUSTNESS
     factors = [0.5, 0.75, 1.25, 1.5]
     losses: dict[float, list[float]] = {f: [] for f in factors}
     for _ in range(n):
@@ -155,7 +159,7 @@ def format_table(comp_rows, type_gaps, delta_losses) -> str:
                  r"is boundedly rational (Boltzmann with $\tau=0.05$, low temperature, near-rational) "
                  r"or penalty-blind myopic (rational payoff with $\delta F\alpha$ term suppressed). "
                  r"Panel C: mean regulator loss from misestimating $\delta$ by a multiplicative factor. "
-                 r"All panels averaged over 200 sampled environments.}")
+                 rf"All panels averaged over {N_ENV_ROBUSTNESS} sampled environments.}}")
     lines.append(r"\label{tab:comparative_statics}")
     lines.append(r"\small")
     lines.append(r"\begin{tabular}{lrrrrr}")

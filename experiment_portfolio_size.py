@@ -1,20 +1,21 @@
-"""Experiment: Portfolio diversification dominance.
+"""Experiment: Portfolio additive-enforcement dominance.
 
 Fixes parameters where a single metric is non-gaming-proof, then sweeps the
 portfolio size n and records gaming intensity, regulator payoff, and safety.
 Left panel: alpha_n* vs n with dashed n* critical size.
 Right panel: u_R and S* vs n.
 
-Writes out/figures/portfolio_dominance.pdf.
+Writes paper-aij/paper/figures/portfolio_dominance.pdf.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 
+from config import OUT_FIG, configure_matplotlib
+
+configure_matplotlib()
 from model import (Environment, critical_portfolio_size, portfolio_alpha_star,
                    regulator_optimum, regulator_payoff)
 
@@ -25,9 +26,6 @@ K_SIGMA = 1.0
 K_DELTA = 1.0
 F = 0.5
 N_VALUES = list(range(1, 26))
-
-REPO_ROOT = Path(__file__).resolve().parent
-OUT_FIG = REPO_ROOT / "out" / "figures"
 
 
 def main() -> None:
@@ -48,28 +46,29 @@ def main() -> None:
         safeties.append(1.0 - a)
 
     OUT_FIG.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(1, 2, figsize=(10.0, 4.0))
+    fig, axes = plt.subplots(1, 2, figsize=(10.0, 4.2))
 
     ax = axes[0]
-    ax.plot(N_VALUES, alphas, marker="o", color="C0", label=r"$\alpha_n^*$")
+    ax.plot(N_VALUES, alphas, marker="o", color="C0", label=r"Equilibrium gaming $\alpha_n^*$")
+    ax.axvline(n_crit, color="black", linestyle="--", alpha=0.6,
+               label=rf"Critical size $n^* = {n_crit}$")
+    ax.set_xlabel(r"Portfolio size $n$")
+    ax.set_ylabel(r"Gaming intensity $\alpha_n^*$")
+    ax.set_ylim(-0.05, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc="upper right", framealpha=0.92)
+
+    ax = axes[1]
+    ax.plot(N_VALUES, payoffs, marker="s", color="C1", label=r"Regulator payoff $u_R$")
+    ax.plot(N_VALUES, safeties, marker="^", color="C2", label=r"Actual safety $S^*_{\mathrm{eq}}$")
     ax.axvline(n_crit, color="black", linestyle="--", alpha=0.6,
                label=rf"$n^* = {n_crit}$")
     ax.set_xlabel(r"Portfolio size $n$")
-    ax.set_ylabel(r"Equilibrium gaming $\alpha_n^*$")
-    ax.set_ylim(-0.05, 1.05)
+    ax.set_ylabel(r"Regulator payoff / actual safety")
     ax.grid(True, alpha=0.3)
-    ax.legend(loc="upper right")
+    ax.legend(loc="lower right", framealpha=0.92)
 
-    ax = axes[1]
-    ax.plot(N_VALUES, payoffs, marker="s", color="C1", label=r"$u_R$")
-    ax.plot(N_VALUES, safeties, marker="^", color="C2", label=r"$S^*_{\mathrm{eq}}$")
-    ax.axvline(n_crit, color="black", linestyle="--", alpha=0.6)
-    ax.set_xlabel(r"Portfolio size $n$")
-    ax.set_ylabel("Regulator payoff / Safety")
-    ax.grid(True, alpha=0.3)
-    ax.legend(loc="lower right")
-
-    fig.suptitle(rf"Portfolio dominance ($\sigma^*={sigma_star:.2f}$, $\delta^*={delta_star:.2f}$)")
+    fig.suptitle(rf"Portfolio size effect at $\sigma^*={sigma_star:.2f}$, $\delta^*={delta_star:.2f}$")
     fig.tight_layout()
     out_path = OUT_FIG / "portfolio_dominance.pdf"
     fig.savefig(out_path)

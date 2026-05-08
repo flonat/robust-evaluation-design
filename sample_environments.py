@@ -1,22 +1,15 @@
-"""Sample the environment family described in the experiments section.
+"""Sample the environment family described in experiments.tex.
 
 Writes the count of generated environments to
-out/stats/num_environments.tex.
+paper-aij/paper/output/stats/num_environments.tex.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 
+from config import N_ENV, OUT_STATS, SEED
 from model import Environment
-
-SEED = 20260420
-N_ENV = 1000
-
-REPO_ROOT = Path(__file__).resolve().parent
-OUT_STATS = REPO_ROOT / "out" / "stats"
 
 
 def sample(n: int, seed: int) -> list[Environment]:

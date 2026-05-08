@@ -1,7 +1,7 @@
 [project]
 name = "robust-evaluation-design-experiments"
 version = "0.1.0"
-description = "Replication code for the robust-evaluation-design paper (anonymous review)."
+description = "Numerical illustrations for 'When Are AI Evaluations Gaming-Proof? A Stackelberg Approach' (Artificial Intelligence, AIJ)"
 requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.26",

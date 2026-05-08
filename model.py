@@ -1,6 +1,6 @@
 """Shared primitives for the Stackelberg evaluation-design model.
 
-All formulas match the model section of the accompanying paper:
+All formulas match sections/model.tex:
   - Developer payoff (eq. developer-payoff):
         u_P = B(1 - sigma*alpha) - (c/2)(1-alpha)^2 - (gamma/2)*alpha^2 - delta*F*alpha
   - Best response (Prop 1):
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from typing import Union
 
 import numpy as np
 
@@ -95,10 +96,19 @@ def portfolio_alpha_star(B: float, c: float, gamma: float, sigma: float,
     return float(np.clip(numerator / denominator, 0.0, 1.0))
 
 
-def critical_portfolio_size(B: float, c: float, sigma: float, delta: float, F: float) -> int:
-    """n* such that alpha_n* = 0: ceil((c - B*sigma) / (delta*F))."""
+def critical_portfolio_size(B: float, c: float, sigma: float, delta: float, F: float) -> Union[int, float]:
+    """Critical portfolio size n* such that alpha_n* = 0: ceil((c - B*sigma) / (delta*F)).
+
+    Returns:
+      int n* >= 1 when delta*F > 0 (the generic case).
+      math.inf when delta*F <= 0 and B*sigma < c, signalling that no finite portfolio of
+        identical metrics is gaming-proof (c.f. Remark on boundary cases in the paper).
+      1 when c <= B*sigma (a single metric is already gaming-proof at this sigma).
+    """
     if delta * F <= 0:
-        return math.inf  # type: ignore[return-value]
+        if c <= B * sigma:
+            return 1
+        return math.inf
     gap = c - B * sigma
     if gap <= 0:
         return 1
