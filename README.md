@@ -1,8 +1,8 @@
 # Replication Package — When Are AI Evaluations Gaming-Proof?
 
 **Author:** Florian Burnat
-**Paper venue:** *Artificial Intelligence* (AIJ, Elsevier)
 **Paper title:** "When Are AI Evaluations Gaming-Proof? A Stackelberg Approach"
+**Status:** Manuscript currently under submission; venue listing and citation will be updated upon acceptance.
 
 Replication code for a Stackelberg model of AI safety evaluation. The regulator
 (leader) commits to a measurement policy parametrised by the triple
