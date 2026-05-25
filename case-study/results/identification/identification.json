@@ -1,0 +1,57 @@
+[
+  {
+    "model_nick": "phi-4-mini",
+    "strategy_nick": "baseline",
+    "public_accuracy": 0.64,
+    "hidden_accuracy": 0.551,
+    "paraphrased_accuracy": 0.673,
+    "gap": 0.08899999999999997,
+    "sigma_lower_bound": NaN,
+    "sigma_upper_bound": 0.911,
+    "sigma_central": NaN,
+    "n_items": 1000,
+    "notes": [
+      "detector=ts_guessing: \u03b1\u0302=0.0000 \u2248 0; gap not explained by voluntary gaming (involuntary-contamination diagnostic per \u00a77.1)",
+      "detector=ngram_lcs: \u03b1\u0302=0.0000 \u2248 0; gap not explained by voluntary gaming (involuntary-contamination diagnostic per \u00a77.1)",
+      "detector=embedding_sim: \u03b1\u0302=0.0000 \u2248 0; gap not explained by voluntary gaming (involuntary-contamination diagnostic per \u00a77.1)",
+      "detector=behavioral_paraphrase: \u03b1\u0302=0.0000 \u2248 0; gap not explained by voluntary gaming (involuntary-contamination diagnostic per \u00a77.1)"
+    ],
+    "alpha_hat_per_detector": {
+      "ts_guessing": 0.0,
+      "ngram_lcs": 0.0,
+      "embedding_sim": 0.0,
+      "behavioral_paraphrase": 0.0
+    },
+    "sigma_per_detector": {
+      "ts_guessing": NaN,
+      "ngram_lcs": NaN,
+      "embedding_sim": NaN,
+      "behavioral_paraphrase": NaN
+    }
+  },
+  {
+    "model_nick": "phi-4-mini",
+    "strategy_nick": "contam-heavy",
+    "public_accuracy": 0.679,
+    "hidden_accuracy": 0.556,
+    "paraphrased_accuracy": 0.687,
+    "gap": 0.123,
+    "sigma_lower_bound": 0.754,
+    "sigma_upper_bound": 0.877,
+    "sigma_central": 0.754,
+    "n_items": 1000,
+    "notes": [],
+    "alpha_hat_per_detector": {
+      "ts_guessing": 0.5,
+      "ngram_lcs": 0.5,
+      "embedding_sim": 0.5,
+      "behavioral_paraphrase": 0.5
+    },
+    "sigma_per_detector": {
+      "ts_guessing": 0.754,
+      "ngram_lcs": 0.754,
+      "embedding_sim": 0.754,
+      "behavioral_paraphrase": 0.754
+    }
+  }
+]

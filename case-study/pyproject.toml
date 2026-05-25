@@ -1,0 +1,52 @@
+[project]
+name = "phase-f-case-study"
+version = "0.1.0"
+description = "Phase F controlled case study for 'When Are AI Evaluations Gaming-Proof?' (AIJ §8)"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # Torch pinned via uv source below — different wheels for CPU (Mac dev) vs CUDA 12.1 (Avon).
+    # Locking to <2.5 keeps transformers 4.x compatibility (we don't need cutting-edge torch features).
+    "torch>=2.1.2,<2.5",
+    "transformers>=4.45,<5",
+    "peft>=0.13",
+    "accelerate>=0.34",
+    "bitsandbytes>=0.43",
+    "datasets>=2.20",
+    "huggingface-hub>=0.24",
+    "sentence-transformers>=3.0",
+    "anthropic>=0.40",
+    "scikit-learn>=1.5",
+    "scipy>=1.11",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "matplotlib>=3.8",
+    "tqdm>=4.66",
+    "pyyaml>=6.0",
+    "click>=8.1",
+]
+
+[project.scripts]
+phase-f = "phase_f.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/phase_f"]
+
+[tool.uv]
+package = true
+
+# Pin torch source by platform:
+# - Linux + GPU (Avon): CUDA 12.1 wheels (compatible with driver 525.60.13+)
+# - macOS (Mac dev): default PyPI (CPU/MPS)
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu121", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
