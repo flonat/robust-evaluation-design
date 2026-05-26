@@ -91,11 +91,19 @@ See `scripts/slurm/` for sbatch templates, `configs/` for per-experiment configs
 | Phase | Status | Date |
 |---|---|---|
 | F.1.0 Avon scoping | Complete | 2026-05-15 |
-| F.1.1 Model downloads | In progress (Slurm job 2000762) | 2026-05-15 |
-| F.1.2 Benchmark + detector scaffold | In progress | 2026-05-15 |
-| F.1.3 Detector implementations | Pending | — |
-| F.1.4 Fine-tune scaffold | Pending | — |
-| F.1.5 Smoke-test fine-tune | Pending | — |
-| F.2 Primitive estimation | Pending | — |
-| F.3 Predictive tests | Pending | — |
-| F.4 Manuscript integration | Pending | — |
+| F.1.1 Model downloads | Complete (Slurm job 2000762 + dl-70b-unsloth job 2000794) | 2026-05-16 |
+| F.1.2 Benchmark + detector scaffold | Complete | 2026-05-18 |
+| F.1.3 Detector implementations | Complete | 2026-05-19 |
+| F.1.4 Fine-tune scaffold | Complete | 2026-05-20 |
+| F.1.5 Smoke-test fine-tune | Complete | 2026-05-20 |
+| F.2 Primitive estimation | Complete (55-cell panel; per-model σ̂ fits at R² ∈ [0.95, 1.00]) | 2026-05-24 |
+| F.3 Predictive tests | Complete (frontier, metric-quality, fine-threshold, portfolio) | 2026-05-25 |
+| F.4 Manuscript integration | Complete (§8 in `paper-aij/paper/main.tex`) | 2026-05-25 |
+
+### Realized compute (from Slurm `sacct` 2026-05-15 → 2026-05-26)
+
+- **Total successful GPU-hours:** ~472 (fine-tune ~294 GPU-h + eval/detect ~178 GPU-h)
+- **Plus debug-retry failures:** ~27 GPU-h (62 jobs, mostly OOM / queue-timeout retries)
+- **Grand total billable:** ~499 GPU-h
+- **Pre-flight budget estimate (above):** 440–500 GPU-h — accurate within bracket
+- The large-model tiers (Gemma-27B, Qwen3-32B, Llama-3.3-70B QLoRA NF4 on 3-GPU nodes) account for ~80% of GPU consumption; small + mid-tier (Phi-4-mini through Qwen3-14B) account for the remaining ~20%.
